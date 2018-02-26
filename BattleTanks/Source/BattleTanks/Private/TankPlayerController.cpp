@@ -1,9 +1,9 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+// Copyright Von Random 2018
 
 #include "TankPlayerController.h"
 #include "BattleTanks.h"
 
-void ATankPlayerController::BeginPlay()
+void ATankPlayerController::BeginPlay() 
 {
 	Super::BeginPlay();  // call BeginPlay() method inherited from Actor class
 	auto ControlledTank = GetControlledTank();
@@ -16,8 +16,26 @@ void ATankPlayerController::BeginPlay()
 		UE_LOG(LogTemp, Warning, TEXT("Tank assigned to the player: %s"), *ControlledTank->GetName())
 	}
 }
-
-ATank * ATankPlayerController::GetControlledTank() const 
+void ATankPlayerController::Tick(float DeltaTime) 
 {
+	Super::Tick(DeltaTime); 
+	// Aim Toward Crossair(); 
+	AimTowardsCrosshair();
+}
+
+ATank * ATankPlayerController::GetControlledTank() const {
 	return Cast<ATank>(GetPawn()); // cast to type pawn 
 }
+
+void ATankPlayerController::AimTowardsCrosshair() {
+	if (!GetControlledTank())
+	{
+		return;
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Init Aim routine"))
+	}
+}
+
+
