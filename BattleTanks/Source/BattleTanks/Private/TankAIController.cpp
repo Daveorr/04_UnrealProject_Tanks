@@ -27,7 +27,30 @@ void ATankAIController::BeginPlay()
 	}
 }
 
-ATank* ATankAIController::AIGetControlledTank() const 
+void ATankAIController::Tick(float DeltaTime) 
+{
+	Super::Tick(DeltaTime);
+	if (!AIGetControlledTank())
+	{
+		UE_LOG(LogTemp, Warning, TEXT("No Tank Assigned to AI"))
+	}
+	else
+	{
+		FVector HitLocation; // Out parameter
+		if (DetectPlayerTank())
+		{
+			// Find The Human Player Tank and Aim at its position
+			HitLocation = DetectPlayerTank()->GetActorLocation();
+			AIGetControlledTank()->AimAt(HitLocation);
+		}
+		else
+		{
+			UE_LOG(LogTemp, Warning, TEXT("Failed To Detect The Player"))
+		}
+	}
+}
+
+ATank* ATankAIController::AIGetControlledTank() const
 {
 	return Cast<ATank>(GetPawn()); // cast to type pawn 
 }

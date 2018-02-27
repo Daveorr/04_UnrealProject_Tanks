@@ -38,46 +38,53 @@ void ATankPlayerController::AimTowardsCrosshair() {
 	{
 		FVector HitLocation; // Out parameter
 		// Get the World Location of the Crosshair LineTrace
-		GetSightRayHitLocation();
-
+		GetSightRayHitLocation(HitLocation);
+		GetControlledTank()->AimAt(HitLocation);
 	}
 }
 
-bool ATankPlayerController::GetSightRayHitLocation() {
+bool ATankPlayerController::GetSightRayHitLocation(FVector& HitLocation) 
+{
+	return DeProjectionOfTheCrossHair(HitLocation);
+}
+
+bool ATankPlayerController::DeProjectionOfTheCrossHair(FVector & HitLocation) {
 	// Find Crosshair position with de-projection of screen coordinates
 	int32 ViewPortSizeX, ViewPortSizeY;
 	GetViewportSize(ViewPortSizeX, ViewPortSizeY);
-	auto ScreenLocation = FVector2D (CrossHairXLocation*ViewPortSizeX, CrossHairYLocation*ViewPortSizeY);
+	auto ScreenLocation = FVector2D(CrossHairXLocation*ViewPortSizeX, CrossHairYLocation*ViewPortSizeY);
 	FVector WorldLocation;
 	FVector WorldDirection;
-	bool HasHit = DeprojectScreenPositionToWorld(ScreenLocation.X, ScreenLocation.Y, WorldLocation, WorldDirection);
-		if (HasHit)
-		{
-			// Parameters for the collision function
-			FHitResult Hit;
-			auto StartLocation = PlayerCameraManager->GetCameraLocation();
-			FCollisionQueryParams TraceParameters(
-				FName(TEXT("")),
-				false, //only simple collisions
-				GetOwner());
-			// Line Trace definition (By Channel)
-			FVector LineTraceEnd = StartLocation + AIM_DISTANCE * WorldDirection;
-			GetWorld()->LineTraceSingleByChannel(
-				Hit,
-				StartLocation, // ray-casting initial point
-				LineTraceEnd, // ray-casting end point
-				ECollisionChannel::ECC_Visibility,
-				TraceParameters
-			);
-			UE_LOG(LogTemp, Warning, TEXT("Hit Location: %s"), *Hit.Location.ToString())
-		}
-		else
-		{
-			UE_LOG(LogTemp, Warning, TEXT("Deprojection Error"))
-		}
+	if (DeprojectScreenPositionToWorld(ScreenLocation.X, ScreenLocation.Y, WorldLocation, WorldDirection))
+	{
+		LineTraceCrossHair(WorldDirection, HitLocation);
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Deprojection Error"))
+	}
 	return true;
 }
 
+void ATankPlayerController::LineTraceCrossHair(FVector &WorldDirection, FVector & HitLocation) {
+	// Parameters for the collision function
+	FHitResult Hit;
+	auto StartLocation = PlayerCameraManager->GetCameraLocation();
+	FCollisionQueryParams TraceParameters(
+		FName(TEXT("")),
+		false, //only simple collisions
+		GetOwner());
+	// Line Trace definition (By Channel)
+	FVector LineTraceEnd = StartLocation + AIM_DISTANCE * WorldDirection;
+	GetWorld()->LineTraceSingleByChannel(
+		Hit,
+		StartLocation, // ray-casting initial point
+		LineTraceEnd, // ray-casting end point
+		ECollisionChannel::ECC_Visibility,
+		TraceParameters
+	);
+	HitLocation = Hit.Location;
+}
 	
 
  

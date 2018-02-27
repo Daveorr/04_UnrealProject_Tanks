@@ -36,5 +36,7 @@ private:
 	// Init Aim through crosshair routine
 	void AimTowardsCrosshair();
 	// Get the hit location
-	bool GetSightRayHitLocation();
+	bool GetSightRayHitLocation(FVector &HitLocation);
+	bool DeProjectionOfTheCrossHair(FVector & HitLocation);
+	void LineTraceCrossHair(FVector &WorldDirection, FVector & HitLocation);
 };
