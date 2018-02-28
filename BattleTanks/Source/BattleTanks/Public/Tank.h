@@ -1,5 +1,7 @@
 // Copyright Von Random 2018
 
+#include "TankAimingComponent.h"
+
 #pragma once
 
 #include "CoreMinimal.h"
@@ -12,8 +14,16 @@ class BATTLETANKS_API ATank : public APawn
 	GENERATED_BODY()
 
 public:
+	// Tank Aiming Routine 
+	void AimAt(FVector Hitlocation);
 	
-	void AimAt(FVector HitLocation);
+	// Barrel movement Routine (callable from Blueprint)
+	UFUNCTION(BlueprintCallable, Category = Setup)	
+	void SetBarrelReference(UStaticMeshComponent* BarrelToSet);
+
+protected:
+
+	UTankAimingComponent * TankAimingComponent = nullptr;
 
 private:	
 	
@@ -29,4 +39,7 @@ private:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+	// Projectile Velocity
+	UPROPERTY(EditAnywhere, Category = Firing)
+		float LaunchSpeed = 40000;
 };
