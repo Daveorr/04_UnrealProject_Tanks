@@ -19,7 +19,7 @@ public:
 	
 	// Barrel movement Routine (callable from Blueprint)
 	UFUNCTION(BlueprintCallable, Category = Setup)	
-	void SetBarrelReference(UStaticMeshComponent* BarrelToSet);
+	void SetBarrelReference(UTankBarrel* BarrelToSet);
 
 protected:
 

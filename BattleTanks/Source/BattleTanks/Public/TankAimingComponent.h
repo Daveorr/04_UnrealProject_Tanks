@@ -3,6 +3,8 @@
 #include "Engine/World.h"
 #include "Components/ActorComponent.h"
 #include "Components/StaticMeshComponent.h"
+#include "Kismet/GameplayStatics.h"
+#include "Kismet/GameplayStaticsTypes.h"
 
 #pragma once
 
@@ -10,6 +12,7 @@
 #include "Components/ActorComponent.h"
 #include "TankAimingComponent.generated.h"
 
+class UTankBarrel; // Forward Declaration (Hold Barrel's physical parameters)
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class BATTLETANKS_API UTankAimingComponent : public UActorComponent
@@ -32,9 +35,12 @@ public:
 	void AimAt(FVector WorldLocation, float LaunchSpeed);
 
 	// Set Barrel Position
-	void SetBarrelReference(UStaticMeshComponent* BarrelToSet);
+	void SetBarrelReference(UTankBarrel* BarrelToSet);
+
+	// Set Barrel Orientation with angular speeds constraints
+	void BarrelAimingTowards(FVector AimDirection);
 
 private:
 	// Barrel Position
-	UStaticMeshComponent * Barrel = nullptr;
+	UTankBarrel * Barrel = nullptr;
 };

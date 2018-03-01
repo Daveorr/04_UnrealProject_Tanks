@@ -1,6 +1,7 @@
 // Copyright Von Random 2018
 
 #include "TankAimingComponent.h"
+#include "TankBarrel.h"
 
 
 // Sets default values for this component's properties
@@ -25,14 +26,51 @@ void UTankAimingComponent::TickComponent(float DeltaTime, ELevelTick TickType, F
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 }
 
-void UTankAimingComponent::SetBarrelReference(UStaticMeshComponent * BarrelToSet) 
+void UTankAimingComponent::SetBarrelReference(UTankBarrel * BarrelToSet)
 {
 	Barrel = BarrelToSet;
 }
 
 void UTankAimingComponent::AimAt(FVector WorldLocation, float LaunchSpeed)
 {
-	UE_LOG(LogTemp, Warning, TEXT("Firing at %f"), LaunchSpeed)
+	if (!Barrel) { return; } // Protect Barrel Pointer
+	FVector OutLaunchVelocity;
+	FVector	StartLocation = Barrel->GetSocketLocation(FName("BarrelHole"));
+
+	// Calculate projectile Velocity
+	bool VelocityCalculationResult = UGameplayStatics::SuggestProjectileVelocity
+	(
+		this, //reference to the actual aiming component
+		OutLaunchVelocity, // Toss Velocity direction
+		StartLocation,	// Start Location
+		WorldLocation,	// End Location 
+		LaunchSpeed,	// Toss velocity ABS value
+		false,	// Select High Arc (artillery mode)
+		0,	// Uncertainty on the aiming final location
+		false,	// Gravity NOT overriden
+		ESuggestProjVelocityTraceOption::DoNotTrace
+	);
+	// Succesfully calculate OutLaunchVelocity
+	if (VelocityCalculationResult) 
+	{
+		// Calculate Out Velocity and print
+		auto AimDirection = OutLaunchVelocity.GetSafeNormal(); // velocity unity vector
+		BarrelAimingTowards(AimDirection);
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Unable to Fire at Location"))
+	}
+}
+
+void UTankAimingComponent::BarrelAimingTowards(FVector AimDirection)
+{
+	FRotator AimOrientation = AimDirection.ToOrientationRotator();	// Get the Aiming orientation
+	FRotator BarrelOrientation = Barrel->GetForwardVector().ToOrientationRotator(); // Get the actual Barrel Orientation
+	FRotator DeltaBarrelOrientation = AimOrientation - BarrelOrientation;
+	UE_LOG(LogTemp, Warning, TEXT("Aiming at %s with offset: %s"), *AimOrientation.ToString(), *DeltaBarrelOrientation.ToString())
+	// Elevate the Barrel
+	Barrel->Elevate(5);
 }
 
 
