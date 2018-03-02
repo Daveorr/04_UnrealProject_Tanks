@@ -2,6 +2,7 @@
 
 #include "TankAimingComponent.h"
 #include "TankBarrel.h"
+#include "TankTurret.h"
 
 
 // Sets default values for this component's properties
@@ -31,6 +32,11 @@ void UTankAimingComponent::SetBarrelReference(UTankBarrel * BarrelToSet)
 	Barrel = BarrelToSet;
 }
 
+void UTankAimingComponent::SetTurretReference(UTankTurret * TurretToSet) 
+{
+	Turret = TurretToSet;
+}
+
 void UTankAimingComponent::AimAt(FVector WorldLocation, float LaunchSpeed)
 {
 	if (!Barrel) { return; } // Protect Barrel Pointer
@@ -56,6 +62,7 @@ void UTankAimingComponent::AimAt(FVector WorldLocation, float LaunchSpeed)
 		// Calculate Out Velocity and print
 		auto AimDirection = OutLaunchVelocity.GetSafeNormal(); // velocity unity vector
 		BarrelAimingTowards(AimDirection);
+		TurretAimingTowards(AimDirection);
 	}
 	else
 	{
@@ -65,13 +72,27 @@ void UTankAimingComponent::AimAt(FVector WorldLocation, float LaunchSpeed)
 
 void UTankAimingComponent::BarrelAimingTowards(FVector AimDirection)
 {
-	FRotator AimOrientation = AimDirection.ToOrientationRotator();	// Get the Aiming orientation
-	FRotator BarrelOrientation = Barrel->GetForwardVector().ToOrientationRotator(); // Get the actual Barrel Orientation
+	FRotator AimOrientation = AimDirection.Rotation();	// Get the Aiming orientation
+	FRotator BarrelOrientation = Barrel->GetForwardVector().Rotation(); // Get the actual Barrel Orientation
 	FRotator DeltaBarrelOrientation = AimOrientation - BarrelOrientation;	// Barrel Required Displacement (deg)
 	float Time = GetWorld()->GetTimeSeconds();
-	UE_LOG(LogTemp, Warning, TEXT("Time %f: Aiming at %s with offset: %s"),Time ,*AimOrientation.ToString(), *DeltaBarrelOrientation.ToString())
 	// Elevate the Barrel
 	Barrel->Elevate(DeltaBarrelOrientation.Pitch);
+}
+
+void UTankAimingComponent::TurretAimingTowards(FVector AimDirection) 
+{
+	FRotator AimOrientation = AimDirection.Rotation();	// Get the Aiming orientation
+	FRotator TurretOrientation = Turret->GetForwardVector().Rotation(); // Get the actual Turret Orientation
+	FRotator DeltaTurretOrientation = AimOrientation - TurretOrientation;	// Turret Required Displacement (deg)
+	// Shortest rotation selected
+	if (FMath::Abs(DeltaTurretOrientation.Yaw) > 180.F)
+	{
+		DeltaTurretOrientation.Yaw *= -1.F;
+	}
+	float Time = GetWorld()->GetTimeSeconds();
+	// Rotate the Turret
+	Turret->Rotate(DeltaTurretOrientation.Yaw);
 }
 
 

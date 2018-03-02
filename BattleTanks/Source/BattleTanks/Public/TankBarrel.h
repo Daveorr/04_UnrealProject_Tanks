@@ -20,7 +20,7 @@ public:
 private:
 	// Tank Motion Physical Contraint Parameters
 	UPROPERTY(EditAnywhere, Category = Setup)
-		float MaxDegreePerSecond = 5;
+		float MaxDegreePerSecond = 10;
 	UPROPERTY(EditAnywhere, Category = Setup)
 		float MaxElevationDegree = 20;
 	UPROPERTY(EditAnywhere, Category = Setup)

@@ -21,6 +21,10 @@ public:
 	UFUNCTION(BlueprintCallable, Category = Setup)	
 	void SetBarrelReference(UTankBarrel* BarrelToSet);
 
+	// Turret movement Routine (callable from Blueprint)
+	UFUNCTION(BlueprintCallable, Category = Setup)
+	void SetTurretReference(UTankTurret* TurretToSet);
+
 protected:
 
 	UTankAimingComponent * TankAimingComponent = nullptr;
@@ -38,5 +42,5 @@ private:
 
 	// Projectile Velocity
 	UPROPERTY(EditAnywhere, Category = Firing)
-		float LaunchSpeed = 4000;
+		float LaunchSpeed = 140000;	// Typical Projectile Fly speed
 };

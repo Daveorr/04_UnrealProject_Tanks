@@ -12,7 +12,8 @@
 #include "Components/ActorComponent.h"
 #include "TankAimingComponent.generated.h"
 
-class UTankBarrel; // Forward Declaration (Hold Barrel's physical parameters)
+class UTankBarrel;  // Forward Declaration (Hold Barrel's physical parameters)
+class UTankTurret; // Forward Declaration (Hold Turret's physical parameters)
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class BATTLETANKS_API UTankAimingComponent : public UActorComponent
@@ -37,10 +38,18 @@ public:
 	// Set Barrel Position
 	void SetBarrelReference(UTankBarrel* BarrelToSet);
 
+	// Set Turret Position
+	void SetTurretReference(UTankTurret * TurretToSet);
+
 	// Set Barrel Orientation with angular speeds constraints
 	void BarrelAimingTowards(FVector AimDirection);
+
+	// Set Turret Orientation with angular speeds constraints
+	void TurretAimingTowards(FVector AimDirection);
 
 private:
 	// Barrel Position
 	UTankBarrel * Barrel = nullptr;
+	// Turret Position
+	UTankTurret * Turret = nullptr;
 };
