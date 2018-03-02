@@ -40,6 +40,7 @@ void ATankPlayerController::AimTowardsCrosshair() {
 		// Get the World Location of the Crosshair LineTrace
 		GetSightRayHitLocation(HitLocation);
 		GetControlledTank()->AimAt(HitLocation);
+
 	}
 }
 
@@ -48,7 +49,8 @@ bool ATankPlayerController::GetSightRayHitLocation(FVector& HitLocation)
 	return DeProjectionOfTheCrossHair(HitLocation);
 }
 
-bool ATankPlayerController::DeProjectionOfTheCrossHair(FVector & HitLocation) {
+bool ATankPlayerController::DeProjectionOfTheCrossHair(FVector & HitLocation) 
+{
 	// Find Crosshair position with de-projection of screen coordinates
 	int32 ViewPortSizeX, ViewPortSizeY;
 	GetViewportSize(ViewPortSizeX, ViewPortSizeY);
@@ -58,12 +60,13 @@ bool ATankPlayerController::DeProjectionOfTheCrossHair(FVector & HitLocation) {
 	if (DeprojectScreenPositionToWorld(ScreenLocation.X, ScreenLocation.Y, WorldLocation, WorldDirection))
 	{
 		LineTraceCrossHair(WorldDirection, HitLocation);
+		return true;
 	}
 	else
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Deprojection Error"))
+		return false;
 	}
-	return true;
 }
 
 void ATankPlayerController::LineTraceCrossHair(FVector &WorldDirection, FVector & HitLocation) {

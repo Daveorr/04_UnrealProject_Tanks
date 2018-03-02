@@ -32,7 +32,7 @@ private:
 	UPROPERTY(EditAnywhere)
 	float CrossHairYLocation = 0.33333;
 	
-	float AIM_DISTANCE = 100000.f; // Track crosshair(in cm)
+	float AIM_DISTANCE = 80000.f; // Track crosshair(in cm)
 	// Init Aim through crosshair routine
 	void AimTowardsCrosshair();
 	// Get the hit location

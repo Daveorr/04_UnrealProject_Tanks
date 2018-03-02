@@ -67,10 +67,11 @@ void UTankAimingComponent::BarrelAimingTowards(FVector AimDirection)
 {
 	FRotator AimOrientation = AimDirection.ToOrientationRotator();	// Get the Aiming orientation
 	FRotator BarrelOrientation = Barrel->GetForwardVector().ToOrientationRotator(); // Get the actual Barrel Orientation
-	FRotator DeltaBarrelOrientation = AimOrientation - BarrelOrientation;
-	UE_LOG(LogTemp, Warning, TEXT("Aiming at %s with offset: %s"), *AimOrientation.ToString(), *DeltaBarrelOrientation.ToString())
+	FRotator DeltaBarrelOrientation = AimOrientation - BarrelOrientation;	// Barrel Required Displacement (deg)
+	float Time = GetWorld()->GetTimeSeconds();
+	UE_LOG(LogTemp, Warning, TEXT("Time %f: Aiming at %s with offset: %s"),Time ,*AimOrientation.ToString(), *DeltaBarrelOrientation.ToString())
 	// Elevate the Barrel
-	Barrel->Elevate(5);
+	Barrel->Elevate(DeltaBarrelOrientation.Pitch);
 }
 
 
