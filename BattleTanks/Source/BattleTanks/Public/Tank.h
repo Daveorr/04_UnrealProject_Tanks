@@ -1,6 +1,7 @@
 // Copyright Von Random 2018
 
 #include "TankAimingComponent.h"
+#include "Engine/World.h"
 
 #pragma once
 
@@ -25,6 +26,10 @@ public:
 	UFUNCTION(BlueprintCallable, Category = Setup)
 	void SetTurretReference(UTankTurret* TurretToSet);
 
+	// Tank Fire a Projectile
+	UFUNCTION(BlueprintCallable, Category = InGame)
+	void Fire();
+
 protected:
 
 	UTankAimingComponent * TankAimingComponent = nullptr;
@@ -43,4 +48,9 @@ private:
 	// Projectile Velocity
 	UPROPERTY(EditAnywhere, Category = Firing)
 		float LaunchSpeed = 140000;	// Typical Projectile Fly speed
+	UPROPERTY(EditAnywhere, Category = Firing)
+		float ReloadTime = 3;	// in seconds
+
+	float LastFiringEvent = 3;	// in seconds
+	float CoolDownTime = 0;
 };

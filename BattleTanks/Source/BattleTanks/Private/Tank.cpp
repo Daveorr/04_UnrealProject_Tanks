@@ -20,6 +20,7 @@ void ATank::BeginPlay()
 	Super::BeginPlay();
 }
 
+
 // Called to bind functionality to input
 void ATank::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
@@ -39,6 +40,21 @@ void ATank::SetBarrelReference(UTankBarrel * BarrelToSet)
 void ATank::SetTurretReference(UTankTurret * TurretToSet) 
 {
 	TankAimingComponent->SetTurretReference(TurretToSet);
+}
+
+void ATank::Fire()
+{
+	float FireEvent = GetWorld()->GetRealTimeSeconds();
+	if (FireEvent < CoolDownTime)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Reloading"))
+	}
+	else
+	{
+		LastFiringEvent = GetWorld()->GetRealTimeSeconds();
+		CoolDownTime = LastFiringEvent + ReloadTime;
+		UE_LOG(LogTemp, Warning, TEXT("Fired! at time: %f, Cooldown end at: %f"), LastFiringEvent, CoolDownTime)
+	}
 }
 
 
