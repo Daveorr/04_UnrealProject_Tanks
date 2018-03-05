@@ -7,7 +7,10 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Pawn.h"
+#include "GameFramework/Character.h"
 #include "Tank.generated.h"
+
+class AProjectile;	// Forward Declaration of Projectile class
 
 UCLASS()
 class BATTLETANKS_API ATank : public APawn
@@ -45,12 +48,18 @@ private:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-	// Projectile Velocity
-	UPROPERTY(EditAnywhere, Category = Firing)
-		float LaunchSpeed = 140000;	// Typical Projectile Fly speed
-	UPROPERTY(EditAnywhere, Category = Firing)
-		float ReloadTime = 3;	// in seconds
-
-	float LastFiringEvent = 3;	// in seconds
+	// Init value for reload routine
+	float LastFiringEvent = 3;	
 	float CoolDownTime = 0;
+
+	// Local Barrel reference for spawning projectile
+	UTankBarrel* Barrel = nullptr;
+
+	UPROPERTY(EditAnywhere, Category = Firing)
+		float LaunchSpeed = 40000;	// Typical Projectile Fly speed
+	UPROPERTY(EditAnywhere, Category = Firing)
+		float ReloadTime = 3;	// Reload Time in seconds
+	UPROPERTY(EditAnywhere, Category = Setup)
+		TSubclassOf<AProjectile> ProjectileBluePrint;	// only accept projectile type object
+
 };

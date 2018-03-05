@@ -7,24 +7,6 @@
 void ATankAIController::BeginPlay() 
 {
 	Super::BeginPlay(); // call BeginPlay() method inherited from Actor class
-	auto ControlledTank = AIGetControlledTank();
-	auto PlayerTank = DetectPlayerTank();
-	if (!ControlledTank)
-	{
-		UE_LOG(LogTemp, Warning, TEXT("Tank NOT assigned to the AI"))
-	}
-	else
-	{
-		UE_LOG(LogTemp, Warning, TEXT("Tank assigned to the AI: %s"), *ControlledTank->GetName())
-	}
-	if (!PlayerTank)
-	{
-		UE_LOG(LogTemp, Warning, TEXT("Player NOT sensed"))
-	}
-	else
-	{
-		UE_LOG(LogTemp, Warning, TEXT("AI Tanks sensed player Tank: %s"), *PlayerTank->GetName())
-	}
 }
 
 void ATankAIController::Tick(float DeltaTime) 
@@ -41,7 +23,10 @@ void ATankAIController::Tick(float DeltaTime)
 		{
 			// Find The Human Player Tank and Aim at its position
 			HitLocation = DetectPlayerTank()->GetActorLocation();
+			// Aim at Human Player
 			AIGetControlledTank()->AimAt(HitLocation);
+			// Fire at Human Player
+			AIGetControlledTank()->Fire();
 		}
 		else
 		{

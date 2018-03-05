@@ -1,6 +1,8 @@
 // Copyright Von Random 2018
 
 #include "Tank.h"
+#include "TankBarrel.h"
+#include "Projectile.h"
 
 
 
@@ -35,6 +37,7 @@ void ATank::AimAt(FVector Hitlocation)
 void ATank::SetBarrelReference(UTankBarrel * BarrelToSet) 
 {
 	TankAimingComponent->SetBarrelReference(BarrelToSet);
+	Barrel = BarrelToSet;	// keep a local reference
 }
 
 void ATank::SetTurretReference(UTankTurret * TurretToSet) 
@@ -44,6 +47,7 @@ void ATank::SetTurretReference(UTankTurret * TurretToSet)
 
 void ATank::Fire()
 {
+	if (!Barrel) { return; }	//Pointer protection
 	float FireEvent = GetWorld()->GetRealTimeSeconds();
 	if (FireEvent < CoolDownTime)
 	{
@@ -54,6 +58,12 @@ void ATank::Fire()
 		LastFiringEvent = GetWorld()->GetRealTimeSeconds();
 		CoolDownTime = LastFiringEvent + ReloadTime;
 		UE_LOG(LogTemp, Warning, TEXT("Fired! at time: %f, Cooldown end at: %f"), LastFiringEvent, CoolDownTime)
+		// Spawn a Projectile in the given socket location (Barrel Hole)
+		auto FiredProjectile = GetWorld()->SpawnActor<AProjectile>(
+			ProjectileBluePrint,
+			Barrel->GetSocketLocation(FName("BarrelHole")),
+			Barrel->GetSocketRotation(FName("BarrelHole")));
+		FiredProjectile->LaunchProjectile(LaunchSpeed);
 	}
 }
 
