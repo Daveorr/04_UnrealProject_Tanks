@@ -26,7 +26,7 @@ void ATankAIController::Tick(float DeltaTime)
 			// Aim at Human Player
 			AIGetControlledTank()->AimAt(HitLocation);
 			// Fire at Human Player
-			AIGetControlledTank()->Fire();
+			//AIGetControlledTank()->Fire();
 		}
 		else
 		{

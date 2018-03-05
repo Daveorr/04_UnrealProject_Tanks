@@ -55,9 +55,9 @@ private:
 	// Local Barrel reference for spawning projectile
 	UTankBarrel* Barrel = nullptr;
 
-	UPROPERTY(EditAnywhere, Category = Firing)
-		float LaunchSpeed = 40000;	// Typical Projectile Fly speed
-	UPROPERTY(EditAnywhere, Category = Firing)
+	UPROPERTY(EditDefaultsOnly, Category = Firing)
+		float LaunchSpeed = 10000;	// Typical Projectile Fly speed
+	UPROPERTY(EditDefaultsOnly, Category = Firing)
 		float ReloadTime = 3;	// Reload Time in seconds
 	UPROPERTY(EditAnywhere, Category = Setup)
 		TSubclassOf<AProjectile> ProjectileBluePrint;	// only accept projectile type object
