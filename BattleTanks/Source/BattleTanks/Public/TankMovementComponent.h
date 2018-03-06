@@ -1,4 +1,5 @@
 // Copyright Von Random 2018
+#include "TankTrack.h"
 
 #pragma once
 
@@ -7,19 +8,32 @@
 #include "TankMovementComponent.generated.h"
 
 /**
- * 
+ * Responsible from driving the tank track
  */
-UCLASS()
+UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
 class BATTLETANKS_API UTankMovementComponent : public UNavMovementComponent
 {
 	GENERATED_BODY()
 
 public:
+	// Constructor
+	UFUNCTION(BlueprintCallable, Category = Setup)
+	void Initialise(UTankTrack * LeftTrackToSet, UTankTrack * RightTrackToSet);
+
 	// move forward
 	UFUNCTION(BlueprintCallable, Category = Moving)
 		void IntendMoveForward(float Throw);
 	// move forward
 	UFUNCTION(BlueprintCallable, Category = Moving)
 		void IntendMoveBackward(float Throw);
-	
+	// move forward
+	UFUNCTION(BlueprintCallable, Category = Moving)
+		void IntendRotateLeft(float Throw);
+	// move forward
+	UFUNCTION(BlueprintCallable, Category = Moving)
+		void IntendRotateRight(float Throw);
+
+private:
+	UTankTrack* LeftTrack = nullptr;
+	UTankTrack* RightTrack = nullptr;
 };
