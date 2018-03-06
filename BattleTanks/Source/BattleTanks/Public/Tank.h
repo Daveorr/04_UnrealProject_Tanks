@@ -1,5 +1,5 @@
 // Copyright Von Random 2018
-
+#include "TankMovementComponent.h"
 #include "TankAimingComponent.h"
 #include "Engine/World.h"
 
@@ -36,6 +36,9 @@ public:
 protected:
 
 	UTankAimingComponent * TankAimingComponent = nullptr;
+	
+	UPROPERTY(BlueprintReadOnly)
+	UTankMovementComponent * TankMovingComponent = nullptr;
 
 private:	
 	

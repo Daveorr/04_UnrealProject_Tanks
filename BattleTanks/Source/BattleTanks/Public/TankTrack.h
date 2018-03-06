@@ -13,5 +13,9 @@ class BATTLETANKS_API UTankTrack : public UStaticMeshComponent
 public:
 	// Set a Track Throttle
 	UFUNCTION(BlueprintCallable, Category = InGame)
-	void SetThrottle ();
+	void SetThrottle(float Throttle);
+
+	// Axial Force exerted by the track (Newton)
+	UPROPERTY(EditDefaultsOnly, Category = Moving)
+		float TrackMaxDrivingForce = 40000000;	
 };
