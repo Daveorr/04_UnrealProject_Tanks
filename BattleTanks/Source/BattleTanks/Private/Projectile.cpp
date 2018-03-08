@@ -31,6 +31,10 @@ void AProjectile::Tick(float DeltaTime)
 
 void AProjectile::LaunchProjectile(float Speed) 
 {
+	if (!ProjectileMovementComponent)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("ERROR IN FIRING!"))
+	}
 	// ForwardVector is refered to the barrel orientation, fire at given speed along the barrel direction
 	ProjectileMovementComponent->SetVelocityInLocalSpace(FVector::ForwardVector * Speed);
 	ProjectileMovementComponent->Activate();

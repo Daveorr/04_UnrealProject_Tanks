@@ -34,11 +34,11 @@ public:
 	void Fire();
 
 protected:
-
-	UTankAimingComponent * TankAimingComponent = nullptr;
-	
 	UPROPERTY(BlueprintReadOnly)
 	UTankMovementComponent * TankMovingComponent = nullptr;
+
+	UPROPERTY(BlueprintReadOnly)
+	UTankAimingComponent * TankAimingComponent = nullptr;
 
 private:	
 	
@@ -59,7 +59,7 @@ private:
 	UTankBarrel* Barrel = nullptr;
 
 	UPROPERTY(EditDefaultsOnly, Category = Firing)
-		float LaunchSpeed = 10000;	// Typical Projectile Fly speed
+		float LaunchSpeed = 4000;	// Typical Projectile Fly speed
 	UPROPERTY(EditDefaultsOnly, Category = Firing)
 		float ReloadTime = 3;	// Reload Time in seconds
 	UPROPERTY(EditAnywhere, Category = Setup)

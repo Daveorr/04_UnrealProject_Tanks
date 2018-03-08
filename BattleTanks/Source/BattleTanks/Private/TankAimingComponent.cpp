@@ -66,7 +66,8 @@ void UTankAimingComponent::AimAt(FVector WorldLocation, float LaunchSpeed)
 	}
 	else
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Unable to Fire at Location"))
+		// UNCOMMENT FOR DEBUG
+		//UE_LOG(LogTemp, Warning, TEXT("Unable to Fire at Location"))
 	}
 }
 

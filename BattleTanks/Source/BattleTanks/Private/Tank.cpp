@@ -47,17 +47,18 @@ void ATank::SetTurretReference(UTankTurret * TurretToSet)
 
 void ATank::Fire()
 {
-	if (!Barrel) { return; }	//Pointer protection
+	if (!Barrel || !ProjectileBluePrint) { UE_LOG(LogTemp, Warning, TEXT("ERROR! CHECK BARREL AND PROJECTILE_BP")) return; }	//Pointer protection
 	float FireEvent = GetWorld()->GetRealTimeSeconds();
 	if (FireEvent < CoolDownTime)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Reloading"))
+		// UNCOMMENT FOR DEBUG
+		//UE_LOG(LogTemp, Warning, TEXT("Reloading"))
 	}
 	else
 	{
 		LastFiringEvent = GetWorld()->GetRealTimeSeconds();
 		CoolDownTime = LastFiringEvent + ReloadTime;
-		UE_LOG(LogTemp, Warning, TEXT("Fired! at time: %f, Cooldown end at: %f"), LastFiringEvent, CoolDownTime)
+		//UE_LOG(LogTemp, Warning, TEXT("Fired! at time: %f, Cooldown end at: %f"), LastFiringEvent, CoolDownTime)
 		// Spawn a Projectile in the given socket location (Barrel Hole)
 		auto FiredProjectile = GetWorld()->SpawnActor<AProjectile>(
 			ProjectileBluePrint,

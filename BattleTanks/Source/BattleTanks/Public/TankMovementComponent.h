@@ -33,10 +33,10 @@ public:
 	UFUNCTION(BlueprintCallable, Category = Moving)
 		void IntendRotateRight(float Throw);
 
-	/** path following: request new velocity */
-		virtual void RequestDirectMove(const FVector& MoveVelocity, bool bForceMaxSpeed) override;
-
 private:
+	/** path following: request new velocity */
+	virtual void RequestDirectMove(const FVector& MoveVelocity, bool bForceMaxSpeed) override;
+	
 	UTankTrack* LeftTrack = nullptr;
 	UTankTrack* RightTrack = nullptr;
 };
