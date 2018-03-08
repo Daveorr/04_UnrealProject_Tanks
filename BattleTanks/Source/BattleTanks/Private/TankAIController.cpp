@@ -27,6 +27,8 @@ void ATankAIController::Tick(float DeltaTime)
 			AIGetControlledTank()->AimAt(HitLocation);
 			// Fire at Human Player
 			//AIGetControlledTank()->Fire();
+			// Move towards Player tank, write in FVector& MoveVelocity
+			MoveToActor(DetectPlayerTank(), AcceptanceRadius);
 		}
 		else
 		{

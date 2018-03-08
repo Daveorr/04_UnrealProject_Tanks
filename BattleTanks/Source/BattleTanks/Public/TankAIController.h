@@ -22,4 +22,5 @@ private:
 	virtual void Tick(float DeltaTime) override;
 	ATank* AIGetControlledTank() const; // AI Pawn getter method
 	ATank* DetectPlayerTank() const;
+	float AcceptanceRadius = 3000; // minimum distance from which enemy will stop away from player tank
 };
