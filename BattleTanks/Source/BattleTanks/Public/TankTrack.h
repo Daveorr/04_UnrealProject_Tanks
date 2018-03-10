@@ -17,5 +17,5 @@ public:
 
 	// Axial Force exerted by the track (Newton)
 	UPROPERTY(EditDefaultsOnly, Category = Moving)
-		float TrackMaxDrivingForce = 40000000;	
+		float TrackMaxDrivingForce = 400000; // Assume 40 tonne tank, and 1g accelleration
 };

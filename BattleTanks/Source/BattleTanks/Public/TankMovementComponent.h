@@ -7,9 +7,14 @@
 #include "GameFramework/NavMovementComponent.h"
 #include "TankMovementComponent.generated.h"
 
+// Forward Declaration
+class UTankTrack;
+
 /**
  * Responsible from driving the tank track
  */
+
+
 UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
 class BATTLETANKS_API UTankMovementComponent : public UNavMovementComponent
 {

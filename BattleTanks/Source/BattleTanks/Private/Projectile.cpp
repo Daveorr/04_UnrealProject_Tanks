@@ -7,7 +7,7 @@
 AProjectile::AProjectile()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick = false;
 	// associate to this class a movement component subobject, no need to protect. 
 	ProjectileMovementComponent = CreateDefaultSubobject<UProjectileMovementComponent>(FName("Projectile Movement Component"));
 	// We don't want the projectile to be fired when it is constructed (only if Fire event true)
@@ -22,12 +22,6 @@ void AProjectile::BeginPlay()
 	
 }
 
-// Called every frame
-void AProjectile::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-
-}
 
 void AProjectile::LaunchProjectile(float Speed) 
 {
