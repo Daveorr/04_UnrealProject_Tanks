@@ -1,5 +1,5 @@
 // Copyright Von Random 2018
-#include "GameFramework/PlayerController.h"
+#include "Tank.h"
 #include "Engine/World.h"
 #pragma once
 
@@ -15,17 +15,12 @@ class BATTLETANKS_API ATankAIController : public AAIController
 {
 	GENERATED_BODY()
 
-public:
-	// Called Every Frame
-	virtual void Tick(float DeltaSeconds) override;
-	
-
-protected:
-	// How close can the AI tank get
-	UPROPERTY(EditDefaultsOnly, Category = "Setup")
-		float AcceptanceRadius = 8000;
-	virtual void SetPawn(APawn* InPawn) override;
 private:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+	// Called every frame
+	virtual void Tick(float DeltaTime) override;
+	ATank* AIGetControlledTank() const; // AI Pawn getter method
+	ATank* DetectPlayerTank() const;
+	float AcceptanceRadius = 3000; // minimum distance from which enemy will stop away from player tank
 };

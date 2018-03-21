@@ -1,24 +1,23 @@
 // Copyright Von Random 2018
+
 #include "TankPlayerController.h"
-#include "Tank.h"
 #include "BattleTanks.h"
 
-void ATankPlayerController::SetPawn(APawn * InPawn) 
-{
-	Super::SetPawn(InPawn);
-	if (InPawn)
-	{
-		auto PossessedTank = Cast<ATank>(InPawn);
-		if (!ensure(PossessedTank)) { return; }
-	}
+ATank * ATankPlayerController::GetControlledTank() const {
+	return Cast<ATank>(GetPawn()); // cast to type pawn 
 }
-
-void ATankPlayerController::BeginPlay()
+void ATankPlayerController::BeginPlay() 
 {
 	Super::BeginPlay();  // call BeginPlay() method inherited from Actor class
-	auto AimingComponent = GetPawn()->FindComponentByClass<UTankAimingComponent>();
-	if (ensure(!AimingComponent)) { return; }
-	FoundAimingComponent(AimingComponent);
+	auto ControlledTank = GetControlledTank();
+	if (!ControlledTank)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Tank NOT assigned to the player"))
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Tank assigned to the player: %s"), *ControlledTank->GetName())
+	}
 }
 
 void ATankPlayerController::Tick(float DeltaTime) 
@@ -30,17 +29,19 @@ void ATankPlayerController::Tick(float DeltaTime)
 
 
 
-void ATankPlayerController::AimTowardsCrosshair() 
-{
-	if (!GetPawn()) { return; } // e.g. if not possessing
-	auto AimingComponent = GetPawn()->FindComponentByClass<UTankAimingComponent>();
-	
-	if (!ensure(AimingComponent)) { return; }
-	
-	FVector HitLocation; // Out parameter
-	// Get the World Location of the Crosshair LineTrace
-	GetSightRayHitLocation(HitLocation);
-	AimingComponent->AimAt(HitLocation);
+void ATankPlayerController::AimTowardsCrosshair() {
+	if (!GetControlledTank())
+	{
+		UE_LOG(LogTemp, Warning, TEXT("No Tank Assigned to player"))
+	}
+	else
+	{
+		FVector HitLocation; // Out parameter
+		// Get the World Location of the Crosshair LineTrace
+		GetSightRayHitLocation(HitLocation);
+		GetControlledTank()->AimAt(HitLocation);
+
+	}
 }
 
 bool ATankPlayerController::GetSightRayHitLocation(FVector& HitLocation) 
