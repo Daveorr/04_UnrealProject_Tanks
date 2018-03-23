@@ -20,6 +20,8 @@ class BATTLETANKS_API ATank : public APawn
 public:
 	// Tank Aiming Routine 
 	void AimAt(FVector Hitlocation);
+
+	bool IsLocked();
 	
 	// Barrel movement Routine (callable from Blueprint)
 	UFUNCTION(BlueprintCallable, Category = Setup)	

@@ -34,7 +34,21 @@ void ATank::AimAt(FVector Hitlocation)
 	TankAimingComponent->AimAt(Hitlocation, LaunchSpeed);
 }
 
-void ATank::SetBarrelReference(UTankBarrel * BarrelToSet) 
+
+
+bool ATank::IsLocked() 
+{
+	if (TankAimingComponent->GetFiringState() == EFiringState::Locked) 
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
+void ATank::SetBarrelReference(UTankBarrel * BarrelToSet)
 {
 	TankAimingComponent->SetBarrelReference(BarrelToSet);
 	Barrel = BarrelToSet;	// keep a local reference

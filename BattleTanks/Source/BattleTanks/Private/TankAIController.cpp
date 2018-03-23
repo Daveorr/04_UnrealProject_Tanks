@@ -1,6 +1,7 @@
 // Copyright Von Random 2018
 
 #include "TankAIController.h"
+#include "TankAimingComponent.h"
 #include "TankPlayerController.h"
 
 
@@ -26,7 +27,10 @@ void ATankAIController::Tick(float DeltaTime)
 			// Aim at Human Player
 			AIGetControlledTank()->AimAt(HitLocation);
 			// Fire at Human Player
-			AIGetControlledTank()->Fire();
+			if (AIGetControlledTank()->IsLocked())
+			{
+				AIGetControlledTank()->Fire();
+			}
 			// Move towards Player tank, write in FVector& MoveVelocity
 			MoveToActor(DetectPlayerTank(), AcceptanceRadius);
 		}
